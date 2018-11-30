@@ -4,17 +4,13 @@ var handleContent = function () {
 
     $('.btn').click(function (e) {
         e.preventDefault();
-		var btn = $(this); //ako zelimo hvatati baš event na ovom gumbu; sada sa console.log vidjet ćemo bas gumb a ne ajax zahtejv kao dolje u console.log
-							//sada smo sigurni da je to baš taj gumb a ne svi koji imaju klasu btn i samo na njemu radimo neku akciju
-	   $.ajax({
+
+        $.ajax({
             url: "data/users.json",
             type: "GET",
             data: { "id": 1 },
-            
-			beforeSend: function () {
-                //tu stavljaš unbind - vidi dolje objašnjenje 
-				//btn.prop('disabled','disabled');  //čak bolji način od unbind je i da dodamo properti disabled i tada na njemu nije moguće ni jedan event odraditi
-				preloader.empty();
+            beforeSend: function () {
+                preloader.empty();
                 preloader.append(ajaxLoader);
             },
             success: function (result, status, xhr) {
@@ -33,12 +29,6 @@ var handleContent = function () {
 					html += '</tr>';
 					
 					$('.users tbody').append(html); //sada ga ispiši u html pod tbody
-					
-					//console.log(this);   //da vidiš što se hvata --vidjet ćemo da hvatamo ajax
-					
-					//btn.unbind('click'); //kada želimo maknuti neki event na određenu akciju to radiom s event. u ovom slučaju 
-										//nakon prvog klika i punjenja podataka korisnik više neće moći klikati na gumb i puniti stranicu istim podatcima
-										//probaj. Stime da se unbind stavlja ne tu već odmah iza reda beforeSend gore - 
 				});
             },
             error: function (xhr, status, error) {
@@ -52,7 +42,7 @@ var handleContent = function () {
                 }
             },
             complete: function () {
-                preloader.empty();  //ovo zakomentiraj pa ćes viditi poruku ako napraviš grešku u json data --- probaj
+                preloader.empty();
             }
         });
     });
